@@ -26,13 +26,29 @@ func TestNewDeck(t *testing.T) {
 }
 
 func TestSaveToFileAndTestNewDeckFromFile(t *testing.T) {
-	de := 52
 	os.Remove("_decktesting")
 	d := newDeck()
+	de := len(newDeck())
 	d.saveToFile("_decktesting")
 	loadedDeck := newDeckFromFile("_decktesting")
 
 	if len(loadedDeck) != de {
 		t.Errorf("Expected %d cards in deck, but got %d", de, len(loadedDeck))
+	}
+}
+
+func TestDeal(t *testing.T) {
+	dealt := 5
+	d := newDeck()
+	de := len(newDeck())
+
+	hand, remainingDeck := deal(d, dealt)
+
+	if len(hand) != dealt {
+		t.Errorf("Expected %d cards to be dealt, but got %d", dealt, len(hand))
+	}
+
+	if len(remainingDeck) != (de - dealt) {
+		t.Errorf("Expected %d cards remaining in deck after deal, but got %d", (de - dealt), len(remainingDeck))
 	}
 }
